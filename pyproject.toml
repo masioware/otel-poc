@@ -12,8 +12,9 @@ fastapi = "^0.111.0"
 opentelemetry-distro = "^0.45b0"
 opentelemetry-exporter-otlp = "^1.24.0"
 opentelemetry-instrumentation = "^0.45b0"
-opentelemetry-instrumentation-asgi = "^0.45b0"
+opentelemetry-instrumentation-wsgi = "^0.45b0"
 opentelemetry-instrumentation-fastapi = "^0.45b0"
+opentelemetry-instrumentation-system-metrics = "^0.45b0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -23,11 +24,12 @@ poethepoet = "^0.26.1"
 envfile = ".env"
 
 [tool.poe.tasks]
-serve = 'opentelemetry-instrument --metrics_exporter console uvicorn app.app:app --port 8000 --host 0.0.0.0'
-dev = 'opentelemetry-instrument --metrics_exporter console,otlp uvicorn app.app:app --port 8000 --host 0.0.0.0 --reload'
+serve = 'opentelemetry-instrument uvicorn app.app:app --port 8000 --host 0.0.0.0'
+dev = 'opentelemetry-instrument uvicorn app.app:app --port 8000 --host 0.0.0.0 --reload'
 export = 'poetry export -f requirements.txt --output requirements.txt'
 up = 'docker compose -f docker/docker-compose.yml up -d --build'
 down = 'docker compose -f docker/docker-compose.yml down'
+run = 'opentelemetry-instrument python -m app __main__.py'
 
 [build-system]
 requires = ["poetry-core"]
